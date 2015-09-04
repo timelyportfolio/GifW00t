@@ -70,7 +70,7 @@ module.exports = function(grunt) {
           'anigif/jsgif/GIFEncoder_WebWorker.js',
           'anigif/jsgif/workcrew.js',
           'anigif/*.js',
-          'html2canvas/build/html2canvas.js',
+          'html2canvas/dist/html2canvas.js',
           'node_modules/async/lib/async.js',
           'bower_components/fabric/dist/all.js'
         ],
