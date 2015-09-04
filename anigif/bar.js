@@ -6,7 +6,7 @@ window.anigif_bar = {
 
         resolve_mode: typeof(anigif_base_url)=="undefined"?"absolute_from_root":"absolute_from_remote",
         
-        base_url: typeof(anigif_base_url)=="undefined"?getAbsoluteUrlPrefix() + "anigif/":anigif_base_url,
+        base_url: typeof(anigif_base_url)=="undefined"?getAbsoluteUrlPrefix() + "lib/gifw00t-0.0.1/":anigif_base_url,
         
         record_delay: 3,
         
@@ -17,31 +17,26 @@ window.anigif_bar = {
             
             //document.querySelectorAll("[koo=zoo]")[0].src
             window.anigif.options.base_url = self.base_url
-            this.downloadHtml(self.base_url + "bar.html", function(err, html) {
-                
-                var div = document.createElement("div");
-                div.id = "anigif_wrapper";
-                div.style.position = "fixed";
-                div.style.right = self.right || "5%";
-                div.style.top = self.top || "5%";
-                div.style.zIndex=99999
-                
-                var htmlworking = self.applyBaseUrl(html)
-                div.innerHTML = htmlworking;
-                document.body.appendChild(div)
-                
-               //prevant global page hooks from hapenning when interacting with anigif
-                var preventBubble = function(e) {
-                    e.stopPropagation();
-                }
-                
-                div.addEventListener("keydown", preventBubble);
-                div.addEventListener("keypress", preventBubble); 
-                div.addEventListener("mousedown", preventBubble)
-                
-                self.init(div);
-            })   
-            
+
+            var div = document.getElementById("anigif_wrapper");
+            /*div.id = "anigif_wrapper"
+            div.style.position = "fixed";
+            div.style.right = self.right || "5%";
+            div.style.top = self.top || "5%";
+            div.style.zIndex=99999
+            */
+  
+             //prevant global page hooks from hapenning when interacting with anigif
+              var preventBubble = function(e) {
+                  e.stopPropagation();
+              }
+              
+              div.addEventListener("keydown", preventBubble);
+              div.addEventListener("keypress", preventBubble); 
+              div.addEventListener("mousedown", preventBubble)
+              
+              self.init(div);
+
             window.anigif.progressSink = function(msg) {
                 self.status(msg)
             }
@@ -227,15 +222,15 @@ function install() {
 }
 
 if (document.readyState === 'complete') {
-   install()
+   //install()
 }
 else {
-    if(window.addEventListener){
-        window.addEventListener('load',install,false); //W3C
-    }
-    else{
-        window.attachEvent('onload',install); //IE
-    }
+    //if(window.addEventListener){
+    //    window.addEventListener('load',install,false); //W3C
+    //}
+    //else{
+    //    window.attachEvent('onload',install); //IE
+    //}
 }
 
 })(window,document);

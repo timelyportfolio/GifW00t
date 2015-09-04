@@ -4,3 +4,5 @@ build-gzip/*
 pacman-gzip/*
 examples-gzip/*
 build/*
+.Rproj.user
+bower_components/

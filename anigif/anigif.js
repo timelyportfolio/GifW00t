@@ -1,6 +1,7 @@
 
 
 
+
 (function(window, document) {
     
     "use strict";
@@ -317,7 +318,8 @@
         
     };
     
-window.anigif.initOnce();
+// htmlwidget comment
+//window.anigif.initOnce();
 
 
 //need to use this WA since getDataURL() can crash the browser (wehn trying to view the url, not when creating it)
