@@ -1,6 +1,31 @@
 ### Fabric
-[![Build Status](https://secure.travis-ci.org/kangax/fabric.js.png?branch=master)](http://travis-ci.org/#!/kangax/fabric.js)
-<a href="https://npmjs.org/package/fabric"><img src="https://badge.fury.io/js/fabric.png"></a>
+
+<!-- chat, support -->
+
+[![Gitter](https://badges.gitter.im/Join Chat.svg)](https://gitter.im/kangax/fabric.js?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
+<!-- build/coverage status, climate -->
+
+[![Build Status](https://secure.travis-ci.org/kangax/fabric.js.svg?branch=master)](http://travis-ci.org/#!/kangax/fabric.js)
+[![Code Climate](https://d3s6mut3hikguw.cloudfront.net/github/kangax/fabric.js/badges/gpa.svg)](https://codeclimate.com/github/kangax/fabric.js)
+[![Coverage Status](https://coveralls.io/repos/kangax/fabric.js/badge.png?branch=master)](https://coveralls.io/r/kangax/fabric.js?branch=master)
+
+<!-- npm, bower versions, downloads -->
+
+[![Bower version](https://badge.fury.io/bo/fabric.svg)](http://badge.fury.io/bo/fabric)
+[![NPM version](https://badge.fury.io/js/fabric.svg)](http://badge.fury.io/js/fabric)
+[![Downloads per month](https://img.shields.io/npm/dm/localeval.svg)](https://www.npmjs.org/package/fabric)
+
+<!-- deps status -->
+
+[![Dependency Status](https://david-dm.org/kangax/fabric.js.svg?theme=shields.io)](https://david-dm.org/kangax/fabric.js)
+[![devDependency Status](https://david-dm.org/kangax/fabric.js/dev-status.svg?theme=shields.io)](https://david-dm.org/kangax/fabric.js#info=devDependencies)
+
+<!-- bounties, tips -->
+
+[![Bountysource](https://api.bountysource.com/badge/tracker?tracker_id=23217)](https://www.bountysource.com/trackers/23217-fabric-js?utm_source=23217&utm_medium=shield&utm_campaign=TRACKER_BADGE)
+[![Tips](https://img.shields.io/gratipay/kangax.svg)](https://gratipay.com/kangax/)
+[![Flattr this git repo](http://api.flattr.com/button/flattr-badge-large.png)](https://flattr.com/submit/auto?user_id=kangax&url=http://github.com/kangax/fabric.js&title=Fabric.js&language=&tags=github&category=software)
 
 **Fabric.js** is a framework that makes it easy to work with HTML5 canvas element. It is an **interactive object model** on top of canvas element. It is also an **SVG-to-canvas parser**.
 
@@ -12,14 +37,14 @@ Using Fabric.js, you can create and populate objects on canvas; objects like sim
 
 ### Goals
 
-- Unit tested (2000+ tests at the moment)
+- Unit tested (2400+ tests at the moment)
 - Modular (~60 small ["classes", modules, mixins](http://fabricjs.com/docs/))
 - Cross-browser
 - [Fast](https://github.com/kangax/fabric.js/wiki/Focus-on-speed)
 - Encapsulated in one object
 - No browser sniffing for critical functionality
 - Runs under ES5 strict mode
-- Runs on a server under [Node.js](http://nodejs.org/) (0.6, 0.8, 0.10)
+- Runs on a server under [Node.js](http://nodejs.org/) (0.6, 0.8, 0.10) (see [Node.js limitations](https://github.com/kangax/fabric.js/wiki/Fabric-limitations-in-node.js))
 
 ### Supported browsers
 
@@ -35,6 +60,15 @@ Using Fabric.js, you can create and populate objects on canvas; objects like sim
 - IE7,6 (incomplete - about 27 failing tests at the moment)
 
 See [Fabric limitations in Old IE](https://github.com/kangax/fabric.js/wiki/Fabric-limitations-in-oldIE).
+
+Note: to properly make old IE work, you will need to add [html5shiv](https://github.com/aFarkas/html5shiv) as a conditional comment in your HEAD, particularly `html5shiv-printshiv.js` to allow for children elements:
+
+```
+<!--[if lt IE 9]>
+    <script src="path/to/your/html5shiv-printshiv.js"></script>
+<![endif]-->
+```
+Remember to add [Explorer Canvas](http://code.google.com/p/explorercanvas/) as well.
 
 You can [run automated unit tests](http://fabricjs.com/test/unit/) right in the browser.
 
@@ -55,14 +89,14 @@ Fabric.js started as a foundation for design editor on [printio.ru](http://print
 
         $ node build.js
 
-    - Or build a custom distribution file, by passing (comma separated) module names to be included.
+    2.1 Or build a custom distribution file, by passing (comma separated) module names to be included.
 
-            $ node build.js modules=text,serialization,parser
-            // or
-            $ node build.js modules=text
-            // or
-            $ node build.js modules=parser,text
-            // etc.
+          $ node build.js modules=text,serialization,parser
+          // or
+          $ node build.js modules=text
+          // or
+          $ node build.js modules=parser,text
+          // etc.
 
       By default (when none of the modules are specified) only basic functionality is included.
       See the list of modules below for more information on each one of them.
@@ -70,11 +104,15 @@ Fabric.js started as a foundation for design editor on [printio.ru](http://print
 
       To get minimal distribution with interactivity, make sure to include corresponding module:
 
-            $ node build.js modules=interaction
+          $ node build.js modules=interaction
 
-    - You can also include all modules like so:
+    2.2 You can also include all modules like so:
 
-            $ node build.js modules=ALL
+          $ node build.js modules=ALL
+
+    2.3 You can exclude a few modules like so:
+
+          $ node build.js modules=ALL exclude=gestures,image_filters
 
 3. Create a minified distribution file
 
@@ -86,13 +124,46 @@ Fabric.js started as a foundation for design editor on [printio.ru](http://print
 
 4. Enable AMD support via require.js (requires uglify)
 
-        $ node build.js requirejs modules=... 
+        $ node build.js requirejs modules=...
+
+5. Create source map file for better productive debugging (requires uglify or google closure compiler).<br>More information about [source maps](http://www.html5rocks.com/en/tutorials/developertools/sourcemaps/).
+
+        $ node build.js sourcemap modules=...
+
+    If you use google closure compiler you have to add `sourceMappingURL` manually at the end of the minified file all.min.js (see issue https://code.google.com/p/closure-compiler/issues/detail?id=941).
+
+        //# sourceMappingURL=fabric.min.js.map
+
+6. Lint source code (prerequisite: `npm -g install jshint`)
+
+        $ jshint src
+
+7. Ensure code guidelines are met (prerequisite: `npm -g install jscs`)
+
+        $ jscs src
+
+<h3 id="fabric-building">Testing</h3>
+
+1. [Install Node.js](https://github.com/joyent/node/wiki/Installation)
+
+2. [Install NPM, if necessary](https://github.com/npm/npm#super-easy-install)
+
+3. Install NPM packages
+
+        $ npm install
+
+4. Run test suite
+
+        $ npm test
+
 
 ### Demos
 
 - [Demos](http://fabricjs.com/demos/)
 - [Kitchensink demo](http://fabricjs.com/kitchensink/)
 - [Benchmarks](http://fabricjs.com/benchmarks/)
+
+[Who's using Fabric?](http://trends.builtwith.com/javascript/FabricJS)
 
 ### Documentation
 
@@ -104,7 +175,8 @@ Also see [official 4-part intro series](http://fabricjs.com/articles), [presenta
 
 These are the optional modules that could be specified for inclusion, when building custom version of fabric:
 
-- **text** — Adds support for `fabric.Text`
+- **text** — Adds support for static text (`fabric.Text`)
+- **itext** — Adds support for interactive text (`fabric.IText`)
 - **serialization** — Adds support for `loadFromJSON`, `loadFromDatalessJSON`, and `clone` methods on `fabric.Canvas`
 - **interaction** — Adds support for interactive features of fabric — selecting/transforming objects/groups via mouse/touch devices.
 - **parser** — Adds support for `fabric.parseSVGDocument`, `fabric.loadSVGFromURL`, and `fabric.loadSVGFromString`
@@ -118,10 +190,11 @@ These are the optional modules that could be specified for inclusion, when build
 
 Additional flags for build script are:
 
-- **requirejs** — Makes fabric requirejs AMD-compatible in `dist/all.js`. *Note:* an unminified, requirejs-compatible version is always created in `dist/all.require.js`
+- **requirejs** — Makes fabric requirejs AMD-compatible in `dist/fabric.js`. *Note:* an unminified, requirejs-compatible version is always created in `dist/fabric.require.js`
 - **no-strict** — Strips "use strict" directives from source
 - **no-svg-export** — Removes svg exporting functionality
 - **no-es5-compat** - Removes ES5 compat methods (Array.prototype.*, String.prototype.*, Function.prototype.*)
+- **sourcemap** - Generates a sourceMap file and adds the `sourceMappingURL` (only if uglifyjs is used) to `dist/fabric.min.js`
 
 For example:
 
@@ -131,19 +204,36 @@ For example:
 
 #### Adding red rectangle to canvas
 
+```html
+<!DOCTYPE html>
+<html>
+<head>
+</head>
+<body>
     <canvas id="canvas" width="300" height="300"></canvas>
-    ...
-    var canvas = new fabric.Canvas('canvas');
 
-    var rect = new fabric.Rect({
-      top: 100,
-      left: 100,
-      width: 60,
-      height: 70,
-      fill: 'red'
-    });
+    <script src="lib/fabric.js"></script>
+    <script>
+        var canvas = new fabric.Canvas('canvas');
 
-    canvas.add(rect);
+        var rect = new fabric.Rect({
+            top : 100,
+            left : 100,
+            width : 60,
+            height : 70,
+            fill : 'red'
+        });
+
+        canvas.add(rect);
+    </script>
+</body>
+</html>
+```
+
+### Helping Fabric
+
+- [Fabric on Bountysource](https://www.bountysource.com/trackers/23217-fabric-js)
+- [Fabric on CodeTriage](http://www.codetriage.com/kangax/fabric.js)
 
 ### Staying in touch
 
@@ -154,6 +244,8 @@ Questions, suggestions — [fabric.js on Google Groups](http://groups.google.com
 See [Fabric questions on Stackoverflow](stackoverflow.com/questions/tagged/fabricjs),
 Fabric snippets on [jsfiddle](http://jsfiddle.net/user/fabricjs/fiddles/)
 or [codepen.io](http://codepen.io/tag/fabricjs).
+
+Fabric on [LibKnot](http://libknot.ohmztech.com/).
 
 Get help in Fabric's IRC channel — irc://irc.freenode.net/#fabric.js
 
@@ -167,7 +259,7 @@ Get help in Fabric's IRC channel — irc://irc.freenode.net/#fabric.js
 
 ### MIT License
 
-Copyright (c) 2008-2013 Printio (Juriy Zaytsev, Maxim Chernyak)
+Copyright (c) 2008-2015 Printio (Juriy Zaytsev, Maxim Chernyak)
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -183,3 +275,6 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
+
+
+[![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/kangax/fabric.js/trend.png)](https://bitdeli.com/free "Bitdeli Badge")

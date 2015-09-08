@@ -98,17 +98,22 @@
            var self = this
            
            if (this.canvasOnly) {
-               self.resizeImage(self.cloneCanvas(self.el), self.options.ratio, function(err, canvas_small) {
+            var cloned_el = self.cloneDom( self.el );             
+             
+               self.resizeImage(self.cloneCanvas(cloned_el), self.options.ratio, function(err, canvas_small) {
                             cba(null, canvas_small);    
                         })
            }
            else
+           debugger;
             window.html2canvas( [ self.el ], {
                     onrendered: function(canvas) {
+                      debugger;
                         self.resizeImage(canvas, self.options.ratio, function(err, canvas_small) {
                             cba(null, canvas_small);    
                         })
-                    }
+                    },
+                    allowTaint: true
             });
            },
         
@@ -135,7 +140,10 @@
                     cloneVideos[i].parentElement.replaceChild(videoCanvas, cloneVideos[i])
                     //document.body.appendChild(videoCanvas);
                 }
+                
+                //this.replaceSvgWithCanvas(clone);
             }   
+            
             
             clone.id="unique___"+el.id;
             
@@ -212,7 +220,7 @@
           }
           else {
             document.body.appendChild(this.frames[i]);
-            this.replaceSvgWithCanvas(this.frames[i]);
+            //this.replaceSvgWithCanvas(this.frames[i]);
         
             window.html2canvas( [ self.frames[i] ], {
                 onrendered: function(canvas) {
@@ -256,12 +264,8 @@
             var serializer = new XMLSerializer();
             var svgs = el.querySelectorAll("svg")
             for (var i=0; i<svgs.length; i++) {
-                var str = serializer.serializeToString(svgs[i]);
-                var canvasEl = document.createElement("canvas");
-                canvasEl.id="canvas"+i;
-                svgs[i].parentElement.replaceChild(canvasEl, svgs[i]);  
-                self.buildCanvasFromSvg(i, canvasEl, str, null);
-            }
+                var canvasEl = pngify(svgs[i]);
+                svgs[i].parentElement.replaceChild(canvasEl, svgs[i]);              }
         },
         
         buildCanvasFromSvg: function(id, canvasEl, svgstr, cba) {

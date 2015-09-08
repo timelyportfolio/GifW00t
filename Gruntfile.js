@@ -71,8 +71,9 @@ module.exports = function(grunt) {
           'anigif/jsgif/workcrew.js',
           'anigif/*.js',
           'html2canvas/dist/html2canvas.js',
-          'node_modules/async/lib/async.js',
-          'bower_components/fabric/dist/all.js'
+          'html2canvas/dist/html2canvas.svg.js',
+          'node_modules/async/lib/async.js'//,
+          //'bower_components/fabric/dist/fabric.js'
         ],
         dest: 'build/<%= pkg.name %>/<%= pkg.name %>.js'
       },
